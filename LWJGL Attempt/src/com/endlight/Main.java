@@ -4,6 +4,9 @@ import org.lwjgl.Version;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import com.endlight.gfx.PerspectiveCamera;
+import com.endlight.gfx.SimpleMesh;
+import com.endlight.utils.Assets;
 import com.endlight.utils.GlobalAccessor;
 import com.endlight.windowing.Display;
 import com.endlight.windowing.Keyboard;
@@ -13,6 +16,7 @@ public class Main
 {
 	static Display display;
 	static Keyboard keyboard;
+	static SimpleMesh mesh;
 	
 	static int x;
 	static int y;
@@ -21,10 +25,15 @@ public class Main
 	
 	static void load()
 	{
+		System.out.println(Assets.readStringFromPath("shaders/default.frag"));
+		
+		GlobalAccessor.addLocator(GlobalAccessor.ASPECT_RATIO, display.getAspectRatio());
 		GlobalAccessor.addLocator(GlobalAccessor.DISPLAY, display);
 		GlobalAccessor.addLocator(GlobalAccessor.MOUSE, new Mouse(display));
 		keyboard = new Keyboard(display);
 		GlobalAccessor.addLocator(GlobalAccessor.KEYBOARD, keyboard);
+		
+		mesh = new SimpleMesh();
 	}
 	
 	static void update()
@@ -33,20 +42,17 @@ public class Main
 			return;
 		
 		if (keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) dispose();
-		
-		if (keyboard.isKeyDown(Keyboard.KEY_ENTER))
-		{
-			System.out.println("Yuppie! :3");
-		}
 	}
 	
 	static void draw()
 	{
-		
+		mesh.draw();
 	}
 	
 	static void dispose()
 	{
+		mesh.dispose();
+		
 		display.dispose();
 		GlobalAccessor.clear();
 		System.out.println("Disposed!");
@@ -71,6 +77,8 @@ public class Main
 		
 		while (display.exists())
 		{	
+			//GlobalAccessor.addLocator(GlobalAccessor.ASPECT_RATIO, display.getAspectRatio());
+			
 			update();
 			display.update();
 			draw();

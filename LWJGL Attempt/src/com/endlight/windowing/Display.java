@@ -4,6 +4,7 @@ import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 
+import com.endlight.utils.GlobalAccessor;
 import com.endlight.utils.IAccessorLocator;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -121,6 +122,9 @@ public class Display implements IAccessorLocator
 	
 	public void update()
 	{
+		// Calculate Aspect Ratio
+		aspectRatio = (float)width / (float)height;
+		
 		// Mouse Position Calculation
 		DoubleBuffer mouseXBuffer = BufferUtils.createDoubleBuffer(1);
 		DoubleBuffer mouseYBuffer = BufferUtils.createDoubleBuffer(1);
@@ -133,7 +137,7 @@ public class Display implements IAccessorLocator
 		
 		// Clearing (will soon be removed)
 		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(0.2f, 0.075f, 0.45f, 1.0f);
+		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	}
 	
 	public void pollWindow()
